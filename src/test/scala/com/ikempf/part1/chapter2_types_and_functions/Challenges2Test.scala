@@ -19,10 +19,14 @@ class Challenges2Test extends FlatSpec with Matchers {
     time(Range(0, 100).map(_ ⇒ fastF(0)).toList) should be < 2000l
   }
 
-  // 1.2.2: Predictably, the memoized generator does not generate random numbers
-  // The memoized function's behaviour is different from the original function because the
-  // former has side effects (using global state as seed) so it can't be replaced by it's seed,
-  // it's not referentially transparent
+  // 2 - Try to memoize a function from your standard library that you normally use to produce random numbers.
+  // Does it work?
+  /**
+    * Predictably, the memoized generator does not generate random numbers
+    * The memoized function's behaviour is different from the original function because the
+    * former has side effects (using global state as seed) so it can't be replaced by it's seed,
+    * it's not referentially transparent
+    */
   it should "memoize random number generator" in {
     val memoizedRand = memoize((_: Any) ⇒ Random.nextInt)
 
@@ -30,27 +34,37 @@ class Challenges2Test extends FlatSpec with Matchers {
     // memoizedRand("") should not equal memoizedRand("")
   }
 
-  // 1.2.3: Given a seed the generated sequence is always the same
-  // The memoization works because the memoized function is pure
+  // 3 - Most random number generators can be initialized with a seed. Implement a function that takes a seed,
+  // calls the random number generator with that seed, and returns the result. Memoize that function. Does it work?
+  /**
+    * Given a seed the generated sequence is always the same
+    * The memoization works because the memoized function is pure
+    */
   it should "memoize random number generator given a seed" in {
     val memoizedRand = memoize(new Random(_: Int).nextInt)
 
     memoizedRand(5) should equal(new Random(5).nextInt)
   }
 
-  // 1.2.4.1
-  // Factorial is pure, memoization works
+  // 4 - Which of these C++ functions are pure? Try to memoize them and observe what happens when you call them
+  // multiple times: memoized and not.
+  // 4.1 - The factorial function from the example in the text.
+  /** Factorial is pure, memoization works */
   it should "memoize factorial function" in {
     val memoizedFact = memoize(Challenges2.fact)
 
     memoizedFact(7) should equal(Challenges2.fact(7))
   }
 
-  // 1.2.4.2
+  // 4.2 - std::getchar()
   // Side-effecting std:getchar can't be memoized
 
-  // 1.2.4.3
-  // f is impure, the side-effecting println isn't be memoized
+  // 4.3
+  // bool f() {
+  // std::cout << "Hello!" << std::endl;
+  // return true;
+  // }
+  /** f is impure, the side-effecting println isn't be memoized */
   it should "memoize hello function" in {
     val memoizedHello = memoize((_: Any) => Challenges2.f())
 
@@ -58,8 +72,14 @@ class Challenges2Test extends FlatSpec with Matchers {
     memoizedHello("") should equal(Challenges2.f())
   }
 
-  // 1.2.4.4
-  // f has local mutable state but is pure, memoization works
+  // 4.4
+  // int f(int x)
+  // {
+  //   static int y = 0;
+  //   y += x;
+  //   return y;
+  // }
+  /** f has local mutable state but is pure, memoization works */
   it should "memoize identity function" in {
     val memoizedHello = memoize(Challenges2.f)
 

@@ -2,11 +2,13 @@ package com.ikempf.part1.chaper1_the_essence_of_composition
 
 object Challenges1 {
 
-  // 1 Identity
+  // 1 - Implement, as best as you can, the identity function in your favorite language (or the second favorite,
+  // if your favorite language happens to be Haskell).
   def identity[A]: A ⇒ A =
     a ⇒ a
 
-  // 2
+  // 2 - Implement the composition function in your favorite language. It takes two functions as arguments and returns
+  // a function that is their composition.
   def composition[A, B, C]: (A ⇒ B) ⇒ (B ⇒ C) ⇒ (A ⇒ C) =
     f ⇒ g ⇒ a ⇒ g(f(a))
 

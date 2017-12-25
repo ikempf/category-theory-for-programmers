@@ -2,7 +2,7 @@ package com.ikempf.part1.chapter4_kleisli_categories
 
 object Challenges4 {
 
-  // 1
+  // 1 - Construct the Kleisli category for partial functions (define composition and identity).
   sealed trait Partial[+A]
   case class Defined[A](a: A) extends Partial[A]
   case object Undefined       extends Partial[Nothing]
@@ -18,7 +18,8 @@ object Challenges4 {
       }
   }
 
-  // 2
+  // 2 - Implement the embellished function safe_reciprocal that returns a valid reciprocal of its argument, if
+  // it’s different from zero.
   def safeReciprocal(a: Double): Partial[Double] =
     if (a != 0)
       Defined(1 / a)
@@ -31,7 +32,8 @@ object Challenges4 {
     else
       Undefined
 
-  // 3
+  // 3 - Compose safe_root and safe_reciprocal to implement safe_root_reciprocal that calculates sqrt(1/x)
+  // whenever possible.
   val safeRootReciprocal: Int => Partial[Double] =
     Partial.compose(safeRoot, safeReciprocal)
 

@@ -11,7 +11,7 @@ class Challenges1Test extends FlatSpec with Matchers with Checkers with Property
     forAll((n: Int) ⇒ Challenges1.identity(n) should equal(n))
   }
 
-  // 3
+  // 3 Write a program that tries to test that your composition function respects identity.
   "Composition" should "respect identity" in {
     def f[A]: A ⇒ (A, A) = a ⇒ (a, a)
 
