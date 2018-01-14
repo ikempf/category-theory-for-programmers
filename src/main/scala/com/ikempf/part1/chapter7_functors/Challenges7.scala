@@ -43,7 +43,7 @@ object Challenges7 {
     * Definition of id
     * = id r
     *
-    * Composition law, is fmap (f . g) r = (fmap f) . (fmap g) . r ?
+    * Composition law, fmap (f . g) r = (fmap f . fmap g) . r
     * fmap (f . g) r
     * Definition of fmap
     * = f . g . r
@@ -88,7 +88,7 @@ object Challenges7 {
     * = id l
     *
     * Composition law
-    * For Nil, is fmap (f . g) Nil = fmap f (fmap g Nil) ?
+    * For Nil, fmap (f . g) Nil = (fmap f . fmap g) Nil
     * fmap (f. g) Nil
     * Definition of fmap
     * = Nil
@@ -96,8 +96,10 @@ object Challenges7 {
     * = fmap f Nil
     * Definition of fmap
     * = fmap f (fmap g Nil)
+    * Definition of composition
+    * - (fmap f . fmap g) Nil
     *
-    * For ::, is fmap (f . g) l = fmap f (fmap g l) ?
+    * For ::, fmap (f . g) l = (fmap f . fmap g) l
     * fmap (f . g) l
     * Definition of fmap
     * = (f . g) h :: fmap (f . g) t
@@ -105,15 +107,19 @@ object Challenges7 {
     * = fmap f (g h :: fmap g t)
     * Definition of fmap + induction
     * = fmap f (fmap g l)
+    * Definition of composition
+    * = (fmap f . fmap g) l
     *
-    * Easier understood starting from fmap f (fmap g l)
-    * fmap f (fmap g l)
+    * Easier understood: starting from (fmap f . fmap g) l
+    * (fmap f . fmap g) l
+    * Definition of composition
+    * = fmap f (fmap g l)
     * Definition of fmap
     * = fmap f (g h :: fmap g t)
     * Definition of fmap + induction
     * = (f . g) h :: fmap (f . g) t
     * Definition of fmap + induction
-    * =  fmap (f . g) l
+    * = fmap (f . g) l
     *
     */
 
