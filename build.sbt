@@ -3,7 +3,7 @@ import Dependencies._
 resolvers += Resolver.sonatypeRepo("releases")
 addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.4")
 
-lazy val root = (project in file("."))
+lazy val ctfp = (project in file("."))
   .settings(
     inThisBuild(
       List(
