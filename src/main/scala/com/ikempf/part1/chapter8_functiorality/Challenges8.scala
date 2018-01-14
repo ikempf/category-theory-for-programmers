@@ -22,7 +22,7 @@ object Challenges8 {
     * Definition of id
     * = id (Pair a "")
     *
-    * Composition law, fmap (g . f) (Pair a "") == (fmap g . fmap f) (Pair a ""
+    * Composition law, fmap (g . f) (Pair a "") == (fmap g . fmap f) (Pair a "")
     * fmap (g . f) Pair(a, "")
     * Definition of fmap
     * = Pair ((g . f) a) ""
@@ -45,7 +45,7 @@ object Challenges8 {
     * Definition of id
     * = id (Pair "" b)
     *
-    * Composition law, fmap (g . f) (Pair "" b) = (fmap g) (fmap f) (Pair "" b)
+    * Composition law, fmap (g . f) (Pair "" b) = (fmap g . fmap f) (Pair "" b)
     * fmap (g . f) (Pair "" b)
     * Definition of fmap
     * = Pair "" ((g . f) b)
@@ -74,7 +74,7 @@ object Challenges8 {
     }
 
   // 2 -  Show the isomorphism between the standard definition of Maybe and this desugaring:
-  //   type Maybe' a = Either (Const () a) (Identity a)
+  // type Maybe' a = Either (Const () a) (Identity a)
   // Hint: Define two mappings between the two implementations.
   // For additional credit, show that they are the inverse of each other using equational reasoning.
 
@@ -104,9 +104,48 @@ object Challenges8 {
     * = () | a
     */
 
-  // 3 - Let’s try another data structure. I call it a PreList because it’s a precursor to a List. It replaces recursion with a type parameter b.
+  // 3 - Let’s try another data structure. I call it a PreList because it’s a precursor to a List. It replaces
+  // recursion with a type parameter b.
   // data PreList a b = Nil | Cons a b
-  // You could recover our earlier definition of a List by recursively applying PreList to itself (we’ll see how it’s done when we talk about fixed points).
+  // You could recover our earlier definition of a List by recursively applying PreList to itself (we’ll see how
+  // it’s done when we talk about fixed points).
   // Show that PreList is an instance of Bifunctor.
+  /**
+    * To show that PreList is a bifunctor, let's show that it is functorial in both arguments
+    *
+    * Cons a b is isomorphic with Pair a b and we know that Pair is a bifunctor
+    *
+    * Identity law for Nil, fmap id Nil = id Nil
+    * fmap id Nil
+    * Definition of fmap
+    * = id Nil
+    *
+    * Composition law, fmap (g . f) Nil = (fmap g . fmap f) Nil
+    * fmap (g . f) Nil
+    * Definition of fmap
+    * = (g . f) Nil
+    * Definition of fmap
+    * = fmap g (f Nil)
+    * Definition of fmap
+    * = fmap f (fmap f Nil)
+    * Definition of composition
+    * = (fmap f . fmap g) Nil
+    *
+    * PreList is the coproduct of two functorial type constructors (Nil is a functor, Cons is a bifunctor)
+    * Thus PreList is a bifunctor
+    *
+    */
+
+  //4 - Show that the following data types define bifunctors in a and b
+  // data K2 c a b = K2 c
+  // data Fst a b = Fst a
+  // data Snd a b = Snd b
+  // For additional credit, check your solutions agains Conor McBride’s paper
+  // Clowns to the Left of me, Jokers to the Right.
+  /**
+    * Let's show that K2 defines a bifunctor in a and b
+    *
+    * Identity law, fmap id (K2 "" a "") = id (K2 "" a "")
+    */
 
 }
