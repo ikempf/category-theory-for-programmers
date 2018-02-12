@@ -10,8 +10,10 @@ lazy val ctfp = (project in file("."))
         organization := "com.ikempf",
         scalaVersion := "2.12.3",
         version := "0.1.0-SNAPSHOT",
-        name := "category-theory-for-programmers"
-      )),
+        name := "category-theory-for-programmers",
+        scalacOptions ++= Seq("-feature")
+      )
+    ),
     libraryDependencies ++= Seq(
       shapeless,
       cats,

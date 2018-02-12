@@ -1,7 +1,10 @@
 package com.ikempf.part1.chapter8_functiorality
 
+import cats.Bifunctor
 import cats.Functor
-import cats.syntax.either._
+import cats.arrow.Profunctor
+
+import scala.language.higherKinds
 
 object Challenges8 {
 
@@ -145,7 +148,66 @@ object Challenges8 {
   /**
     * Let's show that K2 defines a bifunctor in a and b
     *
-    * Identity law, fmap id (K2 "" a "") = id (K2 "" a "")
+    * Since a and b are both ignored, we will test the laws for both arguments at the same time
+    * Identity law, fmap id (K2 c) = id (K2 c)
+    * fmap id (K2 a)
+    * Definition of fmap
+    * = K2 (id a)
+    * Definition of id
+    * = K2 id
+    * Definition of id
+    * = id (K2 id)
+    *
+    * Composition law, fmap (g . f) (K2 c) = (fmap g . fmap f) (K2 c)
+    * fmap (g . f) (K2 c)
+    * Definition of fmap
+    * = K2 ((g . f) c)
+    * Definition of fmap
+    * = fmap g (K2 (f c))
+    * Definition of fmap
+    * = fmap g (fmap f (K2 c))
+    * Definition of composition
+    * = (fmap g . fmap f) (K2 c)
+    *
+    * K2 is a bifunctor
+    *
+    *
+    * Fst and Snd are both isomorphic to the Const functor which defines a bifunctor.
+    *
     */
+
+  // 5 - Define a bifunctor in a language other than Haskell.
+  // Implement bimap for a generic pair in that language.
+  trait MyBiFunctor[F[_, _]] {
+    def lmap[A, B, C](f: A => C)(fab: F[A, B]): F[C, B] = bimap(f, identity[B])(fab)
+    def rmap[A, B, C](f: B => C)(fab: F[A, B]): F[A, C] = bimap(identity[A], f)(fab)
+    def bimap[A, B, C, D](f: A => C, g: B => D)(fab: F[A, B]): F[C, D] =
+      (lmap[A, B, C](f) _).andThen(rmap(g))(fab)
+  }
+  new MyBiFunctor[Pair] {
+    override def bimap[A, B, C, D](f: A => C, g: B => D)(fab: Pair[A, B]): Pair[C, D] =
+      fab.copy(a = f(fab.a), b = g(fab.b))
+  }
+
+  // 6 - Should std::map be considered a bifunctor or a profunctor in the two template arguments Key and T?
+  // How would you redesign this data type to make it so?
+  /**
+    * Map[A, B] defines a bifunctor in arguments A and B but no Profunctor.
+    */
+  new Bifunctor[Map] {
+    override def bimap[A, B, C, D](fab: Map[A, B])(f: A => C, g: B => D): Map[C, D] =
+      fab.map {
+        case (k, v) => f(k) -> g(v)
+      }
+  }
+  new Profunctor[Map] {
+    override def dimap[A, B, C, D](fab: Map[A, B])(f: C => A)(g: B => D): Map[C, D] = ???
+  }
+
+  /** Example profunctor */
+  new Profunctor[Function1] {
+    override def dimap[A, B, C, D](fab: A => B)(f: C => A)(g: B => D): C => D =
+      f.andThen(fab).andThen(g)
+  }
 
 }
