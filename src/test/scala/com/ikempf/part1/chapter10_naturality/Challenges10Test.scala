@@ -1,5 +1,6 @@
 package com.ikempf.part1.chapter10_naturality
 
+import com.ikempf.part1.chapter10_naturality.Challenges10.optToEitherToList
 import com.ikempf.part1.chapter10_naturality.Challenges10.optToList
 import org.scalacheck.Gen
 import org.scalatest.FlatSpec
@@ -15,6 +16,16 @@ class Challenges10Test extends FlatSpec with Matchers with PropertyChecks {
 
     forAll(optGen) { o =>
       optToList(o.map(f)) should equal(optToList(o).map(f))
+    }
+  }
+
+  "Opt to Either to List" should "satisfy naturality laws" in {
+    val optGen = Gen.option(Gen.numStr)
+
+    val f: String => Boolean = _.length % 2 == 0
+
+    forAll(optGen) { o =>
+      optToEitherToList(o.map(f)) should equal(optToEitherToList(o).map(f))
     }
   }
 
